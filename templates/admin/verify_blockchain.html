@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Admin Dashboard</title>
+  <!-- Bootstrap 5.3 CDN -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Bootstrap Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+
+  <style>
+    body {
+      background-color: #f4f6f9;
+    }
+
+    .navmenu {
+      background-color: #ffffff;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+      padding: 15px 20px;
+      border-radius: 10px;
+      margin-bottom: 30px;
+    }
+
+    .navmenu ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: flex;
+      gap: 20px;
+    }
+
+    .navmenu ul li a {
+      text-decoration: none;
+      color: #495057;
+      font-weight: 600;
+    }
+
+    .navmenu ul li a.active {
+      color: #0d6efd;
+    }
+
+    .alert-container {
+      margin-bottom: 20px;
+    }
+
+    .user-table {
+      background: #ffffff;
+      border-radius: 12px;
+      padding: 20px;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.05);
+    }
+
+    .table thead {
+      background-color: #f1f3f5;
+    }
+  </style>
+</head>
+
+<body>
+
+<!-- Nav Menu -->
+<nav id="navmenu" class="navmenu container d-flex justify-content-between align-items-center">
+    <ul class="mb-0">
+      <li><a href="{% url 'adminhome' %}" class="active">Registered Users</a></li>
+      <li><a href="{% url 'customer_lists' %}" class="active">Applications</a></li>
+      <li><a href="{% url 'predict_loan' %}" class="active">Ai</a></li>
+      <li><a href="{% url 'user_logout' %}" class="active">Logout</a></li>
+    </ul>
+    <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
+  </nav>
+
+<!-- Blockchain Transaction Verification Section -->
+<section class="section py-4">
+    <div class="container">
+  
+      <!-- Flash Messages -->
+      {% if messages %}
+        <div class="alert-container">
+          {% for message in messages %}
+            <div class="alert alert-{{ message.tags }}">
+              {{ message }}
+            </div>
+          {% endfor %}
+        </div>
+      {% endif %}
+  
+      <!-- Blockchain Verification Form -->
+      <div class="user-table">
+        <h2 class="mb-4">Verify Blockchain Transaction</h2>
+  
+        <form method="post" class="mb-4">
+          {% csrf_token %}
+          <div class="input-group mb-3">
+            <input type="text" name="blockchain_tx" class="form-control" placeholder="Enter Blockchain Transaction Hash" required>
+            <button class="btn btn-primary" type="submit">Verify</button>
+          </div>
+        </form>
+  
+        {% if error_message %}
+          <div class="alert alert-danger">{{ error_message }}</div>
+        {% endif %}
+  
+        {% if blockchain_data %}
+          <h4>Blockchain Customer Details</h4>
+          <table class="table table-bordered">
+            <tr><th>Full Name</th><td>{{ blockchain_data.full_name }}</td></tr>
+            <tr><th>National ID</th><td>{{ blockchain_data.national_id }}</td></tr>
+            <tr><th>KYC Status</th><td>{{ blockchain_data.kyc_status }}</td></tr>
+            <tr><th>Added By Bank</th><td>{{ blockchain_data.added_by_bank }}</td></tr>
+          </table>
+        {% endif %}
+  
+        {% if tx_details %}
+          <h4 class="mt-4">Blockchain Transaction Metadata</h4>
+          <table class="table table-bordered">
+            <tr><th>Transaction Hash</th><td><code>{{ tx_details.tx_hash }}</code></td></tr>
+            <tr><th>Block Number</th><td>{{ tx_details.block_number }}</td></tr>
+            <tr><th>Block Hash</th><td><code>{{ tx_details.block_hash }}</code></td></tr>
+            <tr><th>Gas Used</th><td>{{ tx_details.gas_used }}</td></tr>
+            <tr><th>Gas Limit</th><td>{{ tx_details.gas_limit }}</td></tr>
+            <tr><th>From Address</th><td><code>{{ tx_details.from_address }}</code></td></tr>
+            <tr><th>To Address</th><td><code>{{ tx_details.to_address }}</code></td></tr>
+            <tr><th>Contract Address</th><td><code>{{ tx_details.contract_address }}</code></td></tr>
+            <tr><th>Mined On</th><td>{{ tx_details.mined_on|date:"Y-m-d H:i:s" }}</td></tr>
+          </table>
+        {% endif %}
+      </div>
+  
+    </div>
+  </section>
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

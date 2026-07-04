@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Admin Dashboard</title>
+  <!-- Bootstrap 5.3 CDN -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Bootstrap Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+
+  <style>
+    body {
+      background-color: #f4f6f9;
+    }
+
+    .navmenu {
+      background-color: #ffffff;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+      padding: 15px 20px;
+      border-radius: 10px;
+      margin-bottom: 30px;
+    }
+
+    .navmenu ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: flex;
+      gap: 20px;
+    }
+
+    .navmenu ul li a {
+      text-decoration: none;
+      color: #495057;
+      font-weight: 600;
+    }
+
+    .navmenu ul li a.active {
+      color: #0d6efd;
+    }
+
+    .alert-container {
+      margin-bottom: 20px;
+    }
+
+    .user-table {
+      background: #ffffff;
+      border-radius: 12px;
+      padding: 20px;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.05);
+    }
+
+    .btn-status {
+      background-color: #6c757d;
+      color: white;
+      border: none;
+    }
+
+    .btn-status:hover {
+      background-color: #5a6268;
+    }
+
+    .badge.bg-success {
+      background-color: #4caf50 !important;
+    }
+
+    .badge.bg-danger {
+      background-color: #e74c3c !important;
+    }
+
+    .table thead {
+      background-color: #f1f3f5;
+    }
+  </style>
+</head>
+
+<body>
+
+<!-- Nav Menu -->
+<nav id="navmenu" class="navmenu container d-flex justify-content-between align-items-center">
+  <ul class="mb-0">
+    <li><a href="{% url 'adminhome' %}" class="active">Registered Users</a></li>
+    <li><a href="{% url 'customer_lists' %}" class="active">Applications</a></li>
+    <li><a href="{% url 'predict_loan' %}" class="active">Ai</a></li>
+    <li><a href="{% url 'user_logout' %}" class="active">Logout</a></li>
+  </ul>
+  <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
+</nav>
+
+<!-- Admin Home Section -->
+<section id="admin-home" class="section py-4">
+  <div class="container">
+
+    <!-- Flash Messages -->
+    {% if messages %}
+      <div class="alert-container">
+        {% for message in messages %}
+          <div class="alert alert-{{ message.tags }}">
+            {{ message }}
+          </div>
+        {% endfor %}
+      </div>
+    {% endif %}
+
+    <!-- User Table -->
+    <div class="user-table">
+      <h4 class="mb-4 text-muted">User List</h4>
+      <table class="table table-striped align-middle">
+        <thead class="table-light">
+          <tr>
+            <th>Username</th>
+            <th>Email</th>
+            <th>Status</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for user in users %}
+            <tr>
+              <td>{{ user.username }}</td>
+              <td>{{ user.email }}</td>
+              <td>
+                {% if user.is_active %}
+                  <span class="badge bg-success">Active</span>
+                {% else %}
+                  <span class="badge bg-danger">Inactive</span>
+                {% endif %}
+              </td>
+              <td>
+                <a href="{% url 'admin_update_userstatus' user.id %}" class="btn btn-status btn-sm">
+                  {% if user.is_active %}
+                    Deactivate
+                  {% else %}
+                    Activate
+                  {% endif %}
+                </a>
+              </td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

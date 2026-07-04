@@ -1,0 +1,29 @@
+[
+    {
+      "inputs": [
+        { "internalType": "string", "name": "_fullName", "type": "string" },
+        { "internalType": "string", "name": "_nationalId", "type": "string" },
+        { "internalType": "string", "name": "_kycStatus", "type": "string" },
+        { "internalType": "string", "name": "_addedByBank", "type": "string" }
+      ],
+      "name": "addCustomer",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        { "internalType": "string", "name": "_nationalId", "type": "string" }
+      ],
+      "name": "getCustomer",
+      "outputs": [
+        { "internalType": "string", "name": "fullName", "type": "string" },
+        { "internalType": "string", "name": "nationalId", "type": "string" },
+        { "internalType": "string", "name": "kycStatus", "type": "string" },
+        { "internalType": "string", "name": "addedByBank", "type": "string" }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    }
+  ]
+  
